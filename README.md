@@ -1,2 +1,2 @@
-# asp-net-playground
+# ASP.NET Playground
 Learning and practice asp.net 
