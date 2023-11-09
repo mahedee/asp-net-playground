@@ -1,5 +1,6 @@
 
 using DemoApp.Filters;
+using DemoApp.Middleware;
 
 namespace DemoApp
 {
@@ -20,12 +21,18 @@ namespace DemoApp
             {
                 options.Filters.Add(new CustomHeaderFilter("X-DevelopedBy", "Mahedee"));
             });
-            
-            // Add Custom Authorization Filter to the global filter collection using IServiceCollection object
+
             builder.Services.AddControllers(options =>
             {
-                options.Filters.Add(new CustomAuthorizationFilter());
+                options.Filters.Add(new LoggingActionFilter());
             });
+
+
+            // Add Custom Authorization Filter to the global filter collection using IServiceCollection object
+            //builder.Services.AddControllers(options =>
+            //{
+            //    options.Filters.Add(new CustomAuthorizationFilter());
+            //});
 
 
             // Add policy based authorization
@@ -50,6 +57,8 @@ namespace DemoApp
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseMiddleware<LoggingMiddleware>();
 
             app.UseHttpsRedirection();
 
