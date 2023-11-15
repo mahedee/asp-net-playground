@@ -1,6 +1,7 @@
 
 using DemoApp.Filters;
 using DemoApp.Middleware;
+using DemoApp.Services;
 
 namespace DemoApp
 {
@@ -12,7 +13,12 @@ namespace DemoApp
 
             // Add services to the container.
 
+
             builder.Services.AddControllers();
+            
+            builder.Services.AddTransient<IMyTransientService, MyTransientService>(); // Transient registration
+            builder.Services.AddScoped<IMyScopeService, MyScopeService>();    // Scoped registration
+
 
             // Here services is the IServiceCollection object
 
@@ -59,6 +65,10 @@ namespace DemoApp
             }
 
             app.UseMiddleware<LoggingMiddleware>();
+
+            // Add the middleware to the HTTP request pipeline
+            app.UseMiddleware<MyMiddleware>();
+            app.UseMiddleware<RequestLoggingMiddleware>();
 
             app.UseHttpsRedirection();
 
